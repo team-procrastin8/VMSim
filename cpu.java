@@ -118,7 +118,7 @@ public class cpu{
                 
             }
         }
-        //if read = 1 aka write
+        //if read = 1 => write
         else{
             //located in TLB
             if(entry != -1){
@@ -181,7 +181,7 @@ public class cpu{
             tlbEntries[i] = entries;
         }
     }
-    //This is wrong will find a better way to FIFO tom.
+
     public static void TLB(int vNum,int pageFrame){
         
         int entry = checkTLB(vNum);
@@ -207,6 +207,4 @@ public class cpu{
         }
         
     }
-    
-    
 }
