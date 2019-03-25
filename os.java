@@ -70,9 +70,7 @@ public class os {
         vpt.resetTble();
     }
     private File getPageFile(String hex) throws IOException{
-        String src = "page_files/original/" + hex + ".pg";
-        String dest = "page_files/copy/" + hex + ".pg";
-        Files.copy(Paths.get(src),Paths.get(dest),StandardCopyOption.REPLACE_EXISTING);
+        String dest = "page_files/" + hex + ".pg";
         return new File(dest);
     }
 }
