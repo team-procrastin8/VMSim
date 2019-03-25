@@ -30,7 +30,7 @@ public class os {
                     File file = getPageFile(hex);
                     PrintWriter pw = new PrintWriter(new FileWriter(file));
 
-                    for (int i = 1; i < 16; i++) {
+                    for (int i = 1; i < 256; i++) {
                         if (pm.getPysMem(clock_ptr, i) != -1) {
                             pw.print(pm.getPysMem(clock_ptr, i) + "\n");
                         }
@@ -42,7 +42,7 @@ public class os {
                 pm.setPhysMem(clock_ptr,0,vpNum);
                 File file = getPageFile(va.substring(0,2));
                 Scanner keyboard = new Scanner(file);
-                for (int i = 1; i < 16; i++ ) {
+                for (int i = 1; i < 256; i++ ) {
                     pm.setPhysMem(clock_ptr, i, keyboard.nextDouble());
                 }
 

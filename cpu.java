@@ -8,40 +8,40 @@ public class cpu{
     public static os os = new os();
     public static pageTable VPT = new pageTable();
     public static int pointer = 7;
-    
+
     public static void main(String[] args) throws IOException{
         Scanner keyboard = new Scanner(System.in);
-        
+
         File inFile = new File(args[0]);
         if (!inFile.canRead()) {
             System.out.println("Enter a valid file and try again.");
             System.exit(0);
         }
-        
+
         if (args.length < 1) {
             System.out.println("Enter the file name as a command line argument and try again.");
             System.exit(0);
         }
-        
+
         Scanner input = new Scanner(inFile);
         createTLB();
         int instrCount = 0;
-        
+
         while(input.hasNext()){
             int rw = 0;
             rw = input.nextInt();
-            
+
             double decimal = 0;
             String virtualAdresss;
             virtualAdresss = input.next();
-            
+
             if(rw == 1){
                 decimal = input.nextDouble();
             }
             try {
                 MMU(rw, virtualAdresss, decimal);
                 instrCount++;
-                
+
                 if (instrCount % 5 == 0) {
                     os.resetTables(tlbEntries, VPT);
                 }
@@ -60,7 +60,7 @@ public class cpu{
         int offset = Integer.parseInt(vAdress.substring(2,4),16);
         System.out.println("The address called for: " + vAdress);
         System.out.println("Read/Write: " + r);
-        
+
         int entry = checkTLB(va);
         //vAdress is located in TLB
         if(r == 0) {
@@ -73,7 +73,7 @@ public class cpu{
                     hit = true;
                     tlbEntries[entry].setR(1);
                     tlbEntries[entry].setV(1);
-                    
+
                     if (physMem.getPysMem(tlbEntries[entry].getVirtualPageNum(), offset) == -1) {
                         dirtybit = os.handlePageFault(vAdress, physMem, VPT);
                         value = physMem.getPysMem(VPT.getPageFrame(va), offset);
@@ -88,7 +88,7 @@ public class cpu{
                     dirtybit = os.handlePageFault(vAdress, physMem, VPT);
                     value = physMem.getPysMem(VPT.getPageFrame(va), offset);
                 }
-                
+
             }
             //not found in TLB softmiss hardmiss
             else {
@@ -115,7 +115,7 @@ public class cpu{
                     dirtybit = os.handlePageFault(vAdress, physMem, VPT);
                     value = physMem.getPysMem(VPT.getPageFrame(va), offset);
                 }
-                
+
             }
         }
         //if read = 1 => write
@@ -128,12 +128,12 @@ public class cpu{
                 tlbEntries[entry].setV(1);
                 tlbEntries[entry].setD(1);
                 tlbEntries[entry].setR(1);
-                
+
                 if (physMem.getPysMem(tlbEntries[entry].getVirtualPageNum(),offset) == -1) {
-                    
+
                     dirtybit= os.handlePageFault(vAdress, physMem, VPT);
                     physMem.setPhysMem(VPT.getPageFrame(va), offset, value);
-                    
+
                 } else {
                     physMem.setPhysMem(tlbEntries[entry].getPageFrame(),offset, value);
                 }
@@ -160,7 +160,7 @@ public class cpu{
                 physMem.setPhysMem(VPT.getPageFrame(va), offset, value);
             }
         }
-        
+
         System.out.println("Dirty Bit: " + dirtybit);
         System.out.println("Soft Miss: " + sMiss);
         System.out.println("Hard Miss: " + hardmiss);
@@ -183,7 +183,7 @@ public class cpu{
     }
 
     public static void TLB(int vNum,int pageFrame){
-        
+
         int entry = checkTLB(vNum);
         if(entry != -1){
             tlbEntries[entry].setV(1);
@@ -205,6 +205,6 @@ public class cpu{
             tlbEntries[entry].setPageFrame(pageFrame);
             tlbEntries[entry].setVPN(vNum);
         }
-        
+
     }
 }

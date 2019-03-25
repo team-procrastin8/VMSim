@@ -1,8 +1,8 @@
 public class pageTable {
-	private page[] vPageTable = new page[16];
+	private page[] vPageTable = new page[256];
 
 	public pageTable(){
-		for(int i = 0; i < 16; ++i){
+		for(int i = 0; i < 256; ++i){
 			page entry = new page(i);
 			vPageTable[i] = entry;
 		}
